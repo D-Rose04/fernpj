@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFireContext } from "../../firebaseSetUp/context/FireBaseContext";
 import './home.css'
 
 export default function Home() {
-  // const [images, setImages] = useState([]);
   const { getImages, images } = useFireContext();
 
   useEffect(() => {
@@ -12,7 +11,7 @@ export default function Home() {
 
   return (
     <div className="gallery">
-      {console.log(images)}
+      {images.map((img)=> <img src={img}></img>)}
     </div>
   )
 }

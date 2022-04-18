@@ -1,6 +1,6 @@
 import { Button } from 'bootstrap';
-import { useRef, useState } from 'react';
-import { Container, Form } from 'react-bootstrap';
+import { useState } from 'react';
+import { Container } from 'react-bootstrap';
 import './uploadSection.css';
 import { useFireContext } from '../../firebaseSetUp/context/FireBaseContext';
 
@@ -10,8 +10,7 @@ export default function Upload() {
 
   const handleInput = (event) => {
     const selected = event.target.files[0];
-    setImg(selected);
-    
+    setImg(selected);    
   };
 
   const handleSubmit = () => {
