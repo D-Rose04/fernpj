@@ -1,0 +1,17 @@
+.uploadContainer{
+    min-height: 37.5rem;
+    background: rgba(241, 241, 241, 0.951);
+}
+
+.imgPlaceHolder{
+    background-color: rgb(168, 168, 168);
+    width: 18rem;
+    height: 20rem;
+    display: flex;
+    margin: 10px auto;
+}
+
+.inputControl{
+    max-width: 500px;
+    margin: 10px auto; 
+}

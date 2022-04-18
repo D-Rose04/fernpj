@@ -1,5 +1,9 @@
 .content {
     background-color: rgb(243, 241, 241);
-    background-image: url('../public/bgimage.jpg');
+    /* background-image: url('../../../public/bgimage.jpg'); */
     background-size: cover;
+}
+
+.loginContainer {
+    min-width: 25rem;
 }
