@@ -5,10 +5,11 @@
 
 .imgPlaceHolder{
     background-color: rgb(168, 168, 168);
-    width: 18rem;
-    height: 20rem;
+    width: 24rem;
+    height: 25rem;
     display: flex;
     margin: 10px auto;
+    background-size: cover;
 }
 
 .inputControl{

@@ -1,3 +1,19 @@
+# Description
+This is a React app for image posting, requires authentication to upload any file users can easily create an account with gmail or another email, before run it, it's neccesary to run npm install to get all the dependecies and your own firebase config file, [here more details to start a project with firebase](https://firebase.google.com/docs/firestore/quickstart). 
+
+## HomePage
+![ss1](./screenshots/Captura1.PNG)
+
+## Login
+![ss2](./screenshots/Captura2.PNG)
+
+## Sign Up
+![ss3](./screenshots/Captura3.PNG)
+
+## Upload Images
+![ss4](./screenshots/Captura4.PNG)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

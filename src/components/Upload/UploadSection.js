@@ -1,4 +1,3 @@
-import { Button } from 'bootstrap';
 import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import './uploadSection.css';
@@ -10,7 +9,10 @@ export default function Upload() {
 
   const handleInput = (event) => {
     const selected = event.target.files[0];
-    setImg(selected);    
+    setImg(selected);
+    const src = URL.createObjectURL(selected);
+    console.log(src);
+    document.getElementById("img").style.backgroundImage = 'url(' + src + ')';
   };
 
   const handleSubmit = () => {
@@ -20,8 +22,8 @@ export default function Upload() {
   return (
     <Container className='uploadContainer'>
       <form onSubmit={(e) => e.preventDefault()}>
-        <div className='imgPlaceHolder rounded'>
-          <img id='img'></img>
+        <div id='img' className='imgPlaceHolder rounded'>
+          
         </div>
         <input src={img} className='inputControl' id="imgUploaded" onChange={(e) => handleInput(e)} type='file' ></input>
         <button className='btn btn-outline-success' onClick={() => handleSubmit()}  >Submit</button>

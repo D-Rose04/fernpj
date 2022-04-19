@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL, list } from 'firebase/storage';
-import { auth, storage } from "../config/config-firebase";
-
+import { auth, db, storage } from "../config/config-firebase";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -23,7 +23,8 @@ export function FireBaseProvider({ children }) {
   const provider = new GoogleAuthProvider();
   const [currUser, setCurrUser] = useState();
   const [logged, setLogged] = useState(false);
-  const [images, setImages] = useState([]);
+  const imagesCol = collection(db, 'images');
+  let urls = [];
 
   function SignUp(email, pwd) {
     return createUserWithEmailAndPassword(auth, email, pwd);
@@ -48,34 +49,51 @@ export function FireBaseProvider({ children }) {
   function uploadImage(file) {
     const filename = file.name;
     const storageRef = ref(storage, `images/${currUser.uid}/${filename}`);
-    return uploadTask = uploadBytesResumable(storageRef, file);
-  }
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
-  async function getImages() {
-    const usersRef = ref(storage, 'images');
-    const firstPage = await list(usersRef, { maxResults: 100 });
-
-    if (firstPage)
-      firstPage.prefixes.forEach(async (uid) => {
-        const newUsersRef = ref(storage, uid.fullPath);
-        const image = await list(newUsersRef, { maxResults: 100 });
-        
-        // gets url for all the images from every user
-        let urls = [];
-        image.items.forEach(async (item) => {
-          const url = await getDownloadURL(item);
-          setImages([...images,url]); 
-        });
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+          default:
+            console.log("Uknown error");
+            break;
+        }
+      },
+      (error) => {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            alert(error.code);
+            break;
+          case 'storage/canceled':
+            alert(error.code);
+            break;
+          default:
+            alert("Uknown error");
+            break;
+        }
+      },
+      async () => {
+        // Upload completed successfully, now we can get the download URL
+        const url = await getDownloadURL(uploadTask.snapshot.ref);
+        console.log(url);
+        await addDoc(imagesCol, { uploadedBy: auth.currentUser.uid, url: url });
       });
-    console.log(images);
   }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrUser(user);
     })
-
-    return unsubscribe;
+    return unsubscribe,urls;
   }, []);
 
   const value = {
@@ -88,8 +106,7 @@ export function FireBaseProvider({ children }) {
     setLogged,
     SignOut,
     uploadImage,
-    getImages,
-    images
+    urls
   };
 
   return (

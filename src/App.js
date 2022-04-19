@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Container, Nav, Navbar, Dropdown, DropdownButton } from 'react-bootstrap';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
@@ -7,20 +7,27 @@ import Signup from './components/Signup/Signup';
 import UploadSection from './components/Upload/UploadSection';
 import { useFireContext } from './firebaseSetUp/context/FireBaseContext';
 import { DoorOpenFill, Upload } from 'react-bootstrap-icons';
+import { useEffect, useState } from 'react';
+import { getDocs, collection } from "firebase/firestore";
+import { db } from './firebaseSetUp/config/config-firebase';
 
 export default function App() {
   const { currUser, SignOut } = useFireContext();
+  const imagesCol = collection(db, 'images');
+  let urls = [];
+  
   const handleLogOut = () => {
     SignOut();
     window.location.reload();
   }
+
   return (
     <div >
       <Navbar expand="lg" variant="light" bg="light" >
         <Container className='justify-content-between'>
           <Navbar.Brand href="/">DHROSE</Navbar.Brand>
           <Nav.Item className='d-inline-flex '>
-            {currUser && currUser.uid ? 
+            {currUser && currUser.uid ?
               <div style={{ display: 'flex' }}>
                 <p style={{ margin: '10px' }}>{currUser.displayName}</p>
                 <DropdownButton id="dropdown-item-button" className='mt-1' variant='light' title=''>
@@ -35,7 +42,7 @@ export default function App() {
       </Navbar>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route path='/' element={<Home/>} />
           <Route path='/login' element={currUser && currUser.uid ? <Navigate to='/' /> : <Login />} />
           <Route path='/signup' element={currUser && currUser.uid ? <Navigate to='/' /> : <Signup />} />
           <Route path='/upload' element={<UploadSection />} />

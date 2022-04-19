@@ -1,0 +1,20 @@
+
+.gallery{
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    -webkit-column-width: 33%;
+    -moz-column-width: 33%;
+    column-width: 33%;
+    padding: 0 12px;
+    background-color: rgba(58, 61, 61, 0.298);
+}
+
+.img{
+    -webkit-transition: all 350ms ease;
+    transition: all 350ms ease;
+    cursor: pointer;
+    height: 33%;
+    width: 27.5rem;
+    margin: 5px;
+}

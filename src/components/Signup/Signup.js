@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../firebaseSetUp/config/config-firebase';
 import { useFireContext } from '../../firebaseSetUp/context/FireBaseContext';
 import { Google } from 'react-bootstrap-icons';
 import {
@@ -13,7 +11,7 @@ import {
 } from 'react-bootstrap';
 
 export default function Signup() {
-  const usersCol = collection(db, 'Users');
+
   const { SignUp, SignInWithGoogle, updateUserName } = useFireContext();
   const [userInfo, setUserInfo] = useState({
     User: '',
@@ -35,21 +33,11 @@ export default function Signup() {
       if (userInfo.Password !== userInfo.ConfirmPassword) return;
 
       // Create a new account for regitered user 
-      const data = await SignUp(
+      await SignUp(
         userInfo.EmailAddress,
         userInfo.Password
       );
-
-      const data2 = await updateUserName(`${userInfo.Name}`);
-      
-      // Add user details to fireStore DB
-      // const newUser = await addDoc(usersCol, {
-      //   Name: userInfo.Name,
-      //   LastName: userInfo.LastName,
-      //   User: userInfo.User,
-      //   EmailAddress: userInfo.EmailAddress
-      // });
-
+      await updateUserName(`${userInfo.Name}`);
     } catch (e) {
       console.log(e);
     }

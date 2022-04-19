@@ -10,7 +10,7 @@ import {
     Row
 } from 'react-bootstrap';
 import { useFireContext } from '../../firebaseSetUp/context/FireBaseContext';
-import { Navigate } from 'react-router-dom';
+
 
 export default function Login() {
     const { SignIn, SignInWithGoogle } = useFireContext();
@@ -21,12 +21,11 @@ export default function Login() {
         setUser({ ...user, [id]: value });
     };
     const handleSignIn = async () => {
-        const data = await SignIn(user.Email, user.Password);
-        
+        await SignIn(user.Email, user.Password);
+
     }
     const handleSignInWithGoogle = async () => {
-        const data = await SignInWithGoogle();
-        
+        await SignInWithGoogle();
     }
 
     return (
